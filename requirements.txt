@@ -1,0 +1,7 @@
+fastapi 
+uvicorn 
+prisma
+pydantic
+yfinance
+pandas
+numpy

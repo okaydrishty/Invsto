@@ -1,0 +1,26 @@
+// database
+datasource db {
+    provider = "postgres"
+    url      = env("DATABASE_URL")
+}
+
+// generator
+generator client {
+    provider             = "prisma-client-py"
+    recursive_type_depth = 5
+    interface= "sync"
+    enable_experimental_decimal = true
+}
+
+// data models
+model Post {
+    id        Int     @id @default(autoincrement())
+    datetime   DateTime@default(now())
+    open Decimal
+	high Decimal
+	low  Decimal
+	close   Decimal
+	volume   Int
+ 
+}
+
