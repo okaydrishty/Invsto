@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Path, status, HTTPException
 from prisma import Prisma
 from models import PostCreate,PostResponse
+import pandas as pd
+from func import calculate_moving_averages,calculate_performance, generate_signals
 
 router = APIRouter()
 
@@ -21,3 +23,22 @@ def create_post(create_data:PostCreate):
     db.disconnect()
 
     return post
+
+
+@router.get("/strategy/performance")
+def strategy_performance():
+    db=Prisma()
+    db.connect()
+    records = db.post.find_many(order={'datetime': 'asc'})
+
+    df = pd.DataFrame(records)
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    df.set_index('datetime', inplace=True)
+    
+    df = calculate_moving_averages(df)
+    df = generate_signals(df)
+    performance = calculate_performance(df)
+
+    db.disconnect()
+
+    return {"strategy": "Moving Average Crossover", "performance": performance}
