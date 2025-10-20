@@ -5,18 +5,22 @@ DecimalType = condecimal(max_digits=10, decimal_places=2)
 
 
 class PostBase(BaseModel):
-    datetime: datetime
     open: DecimalType
     high: DecimalType
     low: DecimalType
     close: DecimalType
     volume: int
 
-class PostCreate(PostBase):
-    pass
+class PostCreate(BaseModel):
+    open: DecimalType
+    high: DecimalType
+    low: DecimalType
+    close: DecimalType
+    volume: int
 
 class PostResponse(PostBase):
     id: int
+    datetime:datetime
     class Config:
         from_attributes = True 
 

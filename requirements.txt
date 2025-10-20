@@ -5,4 +5,3 @@ pydantic
 yfinance
 pandas
 numpy
-matplotlib
