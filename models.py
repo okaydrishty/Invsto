@@ -21,6 +21,11 @@ class PostCreate(BaseModel):
 class PostResponse(PostBase):
     id: int
     datetime:datetime
+    open: float
+    high: float
+    low: float
+    close: float
+    volume: int
     class Config:
         from_attributes = True 
 

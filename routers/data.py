@@ -4,6 +4,8 @@ from models import PostCreate,PostResponse
 import pandas as pd
 from func import calculate_moving_averages,calculate_performance, generate_signals
 from typing import List
+from fastapi.encoders import jsonable_encoder
+from decimal import Decimal
 
 router = APIRouter()
 
@@ -33,8 +35,16 @@ def create_post(create_data:PostCreate):
     db.connect()
     post=db.post.create(data=create_data.model_dump(exclude_none=True))
     db.disconnect()
-
-    return post
+    response= PostResponse(
+        id=post.id,
+        datetime=post.datetime,
+        open=float(post.open),
+        high=float(post.high),
+        low=float(post.low),
+        close=float(post.close),
+        volume=post.volume
+    )
+    return response
 
 
 @router.get("/strategy/performance")
